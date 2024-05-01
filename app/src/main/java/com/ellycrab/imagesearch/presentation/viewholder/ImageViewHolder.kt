@@ -1,5 +1,7 @@
 package com.ellycrab.imagesearch.presentation.viewholder
 
+import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ellycrab.imagesearch.databinding.ImgsearchrsBinding
@@ -27,6 +29,15 @@ class ImageViewHolder(val binding:ImgsearchrsBinding, val switchStateChangeListe
         binding.switch1.setOnCheckedChangeListener  {
                 _,isChecked->
             switchStateChangeListener.onSwitchStateChanged(adapterPosition,isChecked)
+
+            if(isChecked){
+                binding.like.visibility = View.VISIBLE
+
+            }else{
+                binding.like.visibility = View.GONE
+
+            }
+
         }
 
     }
