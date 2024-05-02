@@ -21,28 +21,26 @@ class SaveFragment : Fragment() {
     private val binding by lazy { FragmentSaveBinding.inflate(layoutInflater) }
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        /*
-        bottom nav바 영역
-        save화면에서 image 검색 버튼 눌렀을때
-        */
-        binding.bottomSearch.setOnClickListener {
-            it.findNavController().navigate(R.id.action_saveFragment_to_searchFragment)
-        }
-
 
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         setupRecyclerView()
         observeBookmarkedItems()
     }
+
 
     private fun observeBookmarkedItems() {
         sharedViewModel.bookmarkedItems.observe(viewLifecycleOwner) { bookmarkedItems ->
@@ -51,10 +49,15 @@ class SaveFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+
+
+
         bookmarkAdapter = BookmarkAdapter()
         binding.bookmarkRv.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = bookmarkAdapter
         }
+
+
     }
 }

@@ -53,12 +53,6 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        //이곳은 Bottomnavbar
-        //Search 화면에서 save버튼 눌렀을때
-       binding.bottomSave.setOnClickListener {
-           it.findNavController().navigate(R.id.action_searchFragment_to_saveFragment)
-       }
-
 
         return binding.root
     }
@@ -94,7 +88,7 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
 
         binding.imgSrcBtn.setOnClickListener {
             performImageSearch()
-//            binding.topsearch.visibility = View.GONE
+
             hideKeyboard()
 
         }
@@ -125,6 +119,7 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
 
         val item = imageResultAdapter.currentList[position]
         val bookmarkedItems = sharedViewModel.bookmarkedItems.value ?: emptyList()
+
 
         //아이템이 이미 북마크됬는지 체크
         val isBookmarked = bookmarkedItems.contains(item)

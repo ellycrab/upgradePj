@@ -36,7 +36,5 @@ class ImgAdapter(private val switchStateChangeListener: OnSwitchStateChangeListe
             val imageDocumentEntity = getItem(position) as ImageDocumentEntity
             holder.bind(imageDocumentEntity)
         }
-
-
     }
 }
