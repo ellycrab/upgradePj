@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,6 +61,11 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedViewModel.searchResults.observe(viewLifecycleOwner, Observer {
+            searchResults->
+            imageResultAdapter.submitList(searchResults)
+        })
+
         //sharedPreferences초기화
         sharedPreferences = requireContext().getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
@@ -75,6 +81,8 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
             adapter = imageResultAdapter
         }
 
+
+
         viewModel.imageSearchResponse.observe(viewLifecycleOwner) { imageList ->
 
             //item총 갯수 업데이트
@@ -89,9 +97,15 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
         binding.imgSrcBtn.setOnClickListener {
             performImageSearch()
 
+            //키보드 자판 숨기기
             hideKeyboard()
 
         }
+    }
+
+    private fun performImageSearch() {
+        val searchQuery = binding.imgSearch.text.toString()
+        viewModel.onSearch(searchQuery)
     }
 
 
@@ -101,19 +115,6 @@ class SearchFragment : Fragment(),ImgAdapter.OnSwitchStateChangeListener {
     }
 
 
-    private fun performImageSearch() {
-        val searchQuery = binding.imgSearch.text.toString()
-
-        //마지막 검색어 저장
-        saveLastSearchTerm(searchQuery)
-        viewModel.onSearch(searchQuery)
-    }
-
-    private fun saveLastSearchTerm(searchTerm: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(LAST_SEARCH_KEY, searchTerm)
-        editor.apply()
-    }
     //스위치가 켜졌을 때 해당 항목을 북마크에 추가하거나 스위치가 꺼졌을때 해당 항목을 북마크에서 제거
     override fun onSwitchStateChanged(position: Int, isChecked: Boolean) {
 

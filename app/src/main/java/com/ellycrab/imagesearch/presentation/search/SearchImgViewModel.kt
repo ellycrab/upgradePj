@@ -1,6 +1,8 @@
 package com.ellycrab.imagesearch.presentation.search
 
+import android.media.Image
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +15,7 @@ import com.ellycrab.imagesearch.presentation.search.model.ImageDocumentEntity
 import kotlinx.coroutines.launch
 
 class SearchImgViewModel(
-    private val searchImgRepository: SearchImgRepositoryImpl
+    private val searchImgRepository: SearchImgRepositoryImpl,
 
     ): ViewModel() {
 
@@ -21,13 +23,15 @@ class SearchImgViewModel(
     val imageSearchResponse: MutableLiveData<List<ImageDocumentEntity>?> get() = _imageSearchResult
 
 
+
+    //이미지 검색 메서드
     fun onSearch(query:String) = viewModelScope.launch {
         runCatching{
             val response = searchImgRepository.getSearchImage(query)
-            imageSearchResponse.value = response.documents?.map { it }
+            _imageSearchResult.value = response.documents?.map { it }
 
             //응답결과
-            Log.d("SearchViewModel__",response.toString())
+            Log.d("SearchViewModel",response.toString())
         }.onFailure {
 
             // Handle error

@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ellycrab.imagesearch.R
 import com.ellycrab.imagesearch.databinding.FragmentSaveBinding
@@ -18,7 +21,7 @@ class SaveFragment : Fragment() {
 
     private val sharedViewModel:SharedViewModel by activityViewModels()
     private lateinit var bookmarkAdapter: BookmarkAdapter
-    private val binding by lazy { FragmentSaveBinding.inflate(layoutInflater) }
+    private lateinit var binding: FragmentSaveBinding
 
 
 
@@ -27,8 +30,9 @@ class SaveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
+        binding = FragmentSaveBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
 
@@ -37,9 +41,14 @@ class SaveFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        sharedViewModel.searchResults.observe(viewLifecycleOwner, Observer { searchResults ->
+            bookmarkAdapter.submitList(searchResults)
+        })
         setupRecyclerView()
         observeBookmarkedItems()
     }
+
+
 
 
     private fun observeBookmarkedItems() {
@@ -50,11 +59,9 @@ class SaveFragment : Fragment() {
 
     private fun setupRecyclerView() {
 
-
-
         bookmarkAdapter = BookmarkAdapter()
         binding.bookmarkRv.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context,2)
             adapter = bookmarkAdapter
         }
 

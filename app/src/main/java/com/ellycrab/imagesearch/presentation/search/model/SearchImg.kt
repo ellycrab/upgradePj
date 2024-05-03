@@ -2,6 +2,8 @@ package com.ellycrab.imagesearch.presentation.search.model
 
 import java.util.Date
 
+
+
 data class SearchImageEntity(
     val meta: MetaEntity?,
     val documents: List<ImageDocumentEntity>?,
@@ -12,6 +14,8 @@ data class MetaEntity(
     val pageableCount: Int?,
     val isEnd: Boolean?,
 )
+
+
 
 data class ImageDocumentEntity(
     val collection: String?,
